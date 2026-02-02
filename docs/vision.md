@@ -20,4 +20,4 @@
 (What measurable outcomes indicate that this system is successful?)
 
 - Criterion 1: Users can successfully relogin and register without any errors along with users contniuing to use the app over time.
-- Criterion 2: users can only view their own data any unauthorised access is revoked. Along with duplicate emails are blocked 
+- Criterion 2: Users can only view their own data any unauthorised access is revoked membership access is only given to ones that sign up but encouragement to sign up will be there for all users. Along with duplicate emails are blocked 
