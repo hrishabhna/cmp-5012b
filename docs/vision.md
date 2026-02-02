@@ -19,5 +19,5 @@
 ## 4. Success Criteria
 (What measurable outcomes indicate that this system is successful?)
 
-- Criterion 1:
-- Criterion 2:
+- Criterion 1: Users can successfully relogin and register without any errors along with users contniuing to use the app over time.
+- Criterion 2: users can only view their own data any unauthorised access is reviked. Along with duplicate emails are blocked 
