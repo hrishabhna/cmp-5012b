@@ -7,7 +7,7 @@
 - Frustrations: One of the main fustrations that she has is that meal preping is time-consuming and finding the time is hard as she her work usually tends to be a schedule that changes every day. This makes it difficult for her to prep as well as finding he time to 
 - Typical scenario of use:
 
-## Persona 2: John Healthilo (placeholder name) [Name]
+## Persona 2: John Healthilo
 - Age: 52
 - Background: Overworked at job, underpaid, out of shape, turned to exercise to relief stress
 - Goals: To lose weight and relief stress due to job through the health tracker 
