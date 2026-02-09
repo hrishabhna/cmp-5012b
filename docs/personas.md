@@ -9,7 +9,7 @@
 
 ## Persona 2: John Healthilo
 - Age: 52
-- Background: Overworked at job, turned to exercise as a method of escapism
+- Background: Overworked at job, turned to exercise as a coping mechanism
 - Goals: To lose weight and relief stress due to job through the health tracker 
 - Frustrations: Struggles to reserve time to exercise  
 - Typical scenario of use: After an exercise session, John will use the health tracker to determine his progress so that he can best decide what exercises he enjoys doing and what exercises are the most effective. 
