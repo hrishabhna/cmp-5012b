@@ -12,6 +12,6 @@
 - Background: Overworked at job, turned to exercise as a coping mechanism
 - Goals: To lose weight and relief stress due to job through the health tracker 
 - Frustrations: Struggles to reserve time to exercise  
-- Typical scenario of use: After an exercise session, John will use the health tracker to determine his progress so that he can best decide what exercises he enjoys doing and what exercises are the most effective. 
+- Typical scenario of use: After an exercise session, John will use the health tracker to determine his progress so that he can best decide what exercises he enjoys doing and what exercises are the most effective, as well as help plan when to have these exercise sessions to keep a consistent schedule.
 
 (Add more if useful.)
