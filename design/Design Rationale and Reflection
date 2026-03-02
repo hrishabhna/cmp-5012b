@@ -1,0 +1,24 @@
+Design Rationale: Health Tracker System
+1. Architectural Pattern: Layered Architecture
+We have adopted a Layered Architecture (specifically a Client-Server model) to ensure a clear Separation of Concerns.
+
+Presentation Layer (UI): Focused on user interaction and displaying health metrics without managing data logic.
+
+Logic Layer (Controller): Handles the calculation of Health Points and BMI, ensuring that business rules are centralise.
+
+Data Layer (Persistence): Manages the reading and writing of information to our local storage files.
+
+2. Data Storage Choice: JSON / CSV
+For this prototype, we selected JSON as our primary data format over a traditional SQL database.
+
+Agility: JSON allows for rapid schema changes as we refine our user stories and health metrics.
+
+Simplicity: Since this is a business experiment for an insurance provider, a lightweight file-based system reduces server overhead and deployment complexity.
+
+Interoperability: JSON is natively supported by Node.js, making it easier to pass data between the logic layer and the frontend.
+
+3. Cohesion and Coupling
+The system is designed to be highly cohesive; for example, the "Nutritional Logging" logic is kept entirely separate from "Social Leaderboards". This low coupling ensures that if we update the way calories are calculated, it will not negatively impact the group competition features or user authentication.
+
+4. User-Centric Interface
+Our Low-fidelity Wireframes focus on "Low Friction" data entry. By using dropdowns and pre-validated numeric fields, we reduce the risk of invalid data entering the system, which is critical for accurate insurance risk assessment.
