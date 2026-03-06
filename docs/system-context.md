@@ -1,0 +1,1 @@
+The "Health Tracker" sits at the centre of our design. Users interact with it directly to log data. The system boundary includes the user profile database, the calorie calculator, and the goal-tracking logic. Outside the boundary, we rely on an external Email Service to handle group notifications and invitations.  
