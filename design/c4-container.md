@@ -5,16 +5,16 @@
 ## Container Responsibilities
 
 ### Web / Frontend
-- Responsibilities:
-- Main technologies (if known):
+- Type: HTML
+- Description: Displays to the user all the tools that they can use for the health tracker as well as the health data collected
 
 ### Backend / API
-- Responsibilities:
-- Main technologies:
+- Type: Java
+- Description: Collects health data to be used by user and utilizes the external email service for group notifications and invitations
 
 ### Database / Storage
-- Responsibilities:
-- Data stored:
+- Type: PostgreSQL
+- Description: Stores health data and user information
 
 ### Other Containers
 (Add as necessary.)
