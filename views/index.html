@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VitalTrack — Health Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-mark">💚</div>
+      <div>
+        <h1>VitalTrack</h1>
+        <span>Health Tracker by UEA</span>
+      </div>
+    </div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchAuthTab('login')">Sign In</button>
+      <button class="auth-tab" onclick="switchAuthTab('register')">Register</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="auth-form active" id="login-form">
+      <div class="field-group">
+        <label>Username</label>
+        <input class="input" id="login-username" placeholder="your_username" />
+      </div>
+      <div class="field-group">
+        <label>Password</label>
+        <input class="input" id="login-password" type="password" placeholder="••••••••" />
+      </div>
+      <div id="login-error" class="error-msg" style="display:none"></div>
+      <button class="btn btn-primary" onclick="handleLogin()" style="margin-top:4px">Sign In →</button>
+    </div>
+
+    <!-- REGISTER -->
+    <div class="auth-form" id="register-form">
+      <div class="field-group">
+        <label>Username <span style="color:var(--muted);font-size:10px">(must be unique)</span></label>
+        <input class="input" id="reg-username" placeholder="Choose a username" oninput="checkUsername()" />
+        <span id="reg-username-msg" class="error-msg"></span>
+      </div>
+      <div class="field-group">
+        <label>Full Name</label>
+        <input class="input" id="reg-name" placeholder="Your full name" />
+      </div>
+      <div class="field-group">
+        <label>Email Address</label>
+        <input class="input" id="reg-email" placeholder="you@example.com" oninput="validateEmail()" />
+        <span id="reg-email-msg" class="error-msg"></span>
+      </div>
+      <div class="field-group">
+        <label>Password</label>
+        <input class="input" id="reg-password" type="password" placeholder="Min 6 characters" />
+      </div>
+      <hr class="divider">
+      <p style="font-size:12px;color:var(--muted)">Health Profile <span style="opacity:0.6">(for BMI & health overview)</span></p>
+      <div class="field-row">
+        <div class="field-group">
+          <label>Height (cm)</label>
+          <input class="input" id="reg-height" type="number" placeholder="175" oninput="calcBMI()" />
+        </div>
+        <div class="field-group">
+          <label>Weight (kg)</label>
+          <input class="input" id="reg-weight" type="number" placeholder="70" oninput="calcBMI()" />
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label>Date of Birth</label>
+          <input class="input" id="reg-dob" type="date" />
+        </div>
+        <div class="field-group">
+          <label>Gender</label>
+          <select class="input" id="reg-gender">
+            <option value="">Select</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Non-binary</option>
+            <option>Prefer not to say</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Target Weight (kg) — optional</label>
+        <input class="input" id="reg-target-weight" type="number" placeholder="e.g. 65" />
+      </div>
+      <div id="bmi-feedback" class="health-feedback"></div>
+      <div id="reg-error" class="error-msg" style="display:none"></div>
+      <button class="btn btn-primary" onclick="handleRegister()" style="margin-top:4px">Create Account →</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-mark">💚</div>
+      <h2>VitalTrack</h2>
+    </div>
+    <div class="sidebar-user">
+      <div class="sidebar-user-name" id="sidebar-name">—</div>
+      <div class="sidebar-user-handle" id="sidebar-handle">—</div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Overview</div>
+      <button class="nav-item active" onclick="navigate('dashboard')"><span class="nav-icon">🏠</span>Dashboard</button>
+      <button class="nav-item" onclick="navigate('profile')"><span class="nav-icon">👤</span>My Profile</button>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Track</div>
+      <button class="nav-item" onclick="navigate('exercise')"><span class="nav-icon">🏃</span>Exercise</button>
+      <button class="nav-item" onclick="navigate('diet')"><span class="nav-icon">🥗</span>Diet & Nutrition</button>
+      <button class="nav-item" onclick="navigate('weight')"><span class="nav-icon">⚖️</span>Weight Log</button>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Progress</div>
+      <button class="nav-item" onclick="navigate('goals')"><span class="nav-icon">🎯</span>Goals</button>
+      <button class="nav-item" onclick="navigate('history')"><span class="nav-icon">📊</span>History</button>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Social</div>
+      <button class="nav-item" onclick="navigate('groups')"><span class="nav-icon">👥</span>Groups</button>
+    </div>
+
+    <div class="sidebar-footer">
+      <button class="btn btn-ghost btn-sm" style="width:100%" onclick="logout()">Sign Out</button>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-header">
+        <h2 id="dash-greeting">Good morning 👋</h2>
+        <p>Here's your health snapshot for today</p>
+      </div>
+
+      <!-- GOAL ALERTS -->
+      <div id="goal-alerts" style="margin-bottom:16px"></div>
+
+      <!-- STATS ROW -->
+      <div class="grid-3" style="margin-bottom:16px">
+        <div class="stat-card">
+          <div class="stat-label">BMI</div>
+          <div class="stat-value" id="dash-bmi">—</div>
+          <div class="stat-delta" id="dash-bmi-cat">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Today's Calories</div>
+          <div class="stat-value" id="dash-calories">0<span class="stat-unit">kcal</span></div>
+          <div class="stat-delta" id="dash-cal-note">No meals logged</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Exercise Today</div>
+          <div class="stat-value" id="dash-exercise">0<span class="stat-unit">min</span></div>
+          <div class="stat-delta" id="dash-ex-note">No sessions logged</div>
+        </div>
+      </div>
+
+      <!-- BMI METER -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">⚕️ BMI Overview</div>
+        <div class="bmi-meter"><div class="bmi-needle" id="bmi-needle" style="left:30%"></div></div>
+        <div class="bmi-labels"><span>Underweight<br>&lt;18.5</span><span>Normal<br>18.5–25</span><span>Overweight<br>25–30</span><span>Obese<br>&gt;30</span></div>
+        <p style="font-size:13px;color:var(--muted);margin-top:12px" id="bmi-detail-text">Update your weight to see your current BMI.</p>
+      </div>
+
+      <!-- WEEKLY BARS -->
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🔥 Weekly Calories</div>
+          <div class="mini-chart" id="cal-chart"></div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:6px">
+            <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">⚡ Weekly Exercise (min)</div>
+          <div class="mini-chart" id="ex-chart"></div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:6px">
+            <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE PAGE -->
+    <div class="page" id="page-profile">
+      <div class="page-header">
+        <h2>My Profile</h2>
+        <p>Manage your personal information and health data</p>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">👤 Personal Information</div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="field-group"><label>Full Name</label><input class="input" id="prof-name" /></div>
+            <div class="field-group"><label>Email Address</label><input class="input" id="prof-email" /></div>
+            <div class="field-group"><label>Date of Birth</label><input class="input" type="date" id="prof-dob" /></div>
+            <div class="field-group"><label>Gender</label>
+              <select class="input" id="prof-gender">
+                <option>Male</option><option>Female</option><option>Non-binary</option><option>Prefer not to say</option>
+              </select>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="saveProfile()">Save Changes</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">📐 Body Metrics</div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="field-group"><label>Height (cm)</label><input class="input" id="prof-height" type="number" oninput="updateProfileBMI()" /></div>
+            <div class="field-group"><label>Current Weight (kg)</label><input class="input" id="prof-weight" type="number" oninput="updateProfileBMI()" /></div>
+            <div class="field-group"><label>Target Weight (kg)</label><input class="input" id="prof-target" type="number" /></div>
+            <div id="prof-bmi-display" style="background:var(--surface2);border-radius:8px;padding:14px">
+              <div style="font-size:12px;color:var(--muted);margin-bottom:4px">YOUR BMI</div>
+              <div style="font-size:28px;font-family:'Syne',sans-serif;font-weight:800" id="prof-bmi-val">—</div>
+              <div style="font-size:12px;margin-top:4px" id="prof-bmi-cat">—</div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="saveProfile()">Save Metrics</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXERCISE PAGE -->
+    <div class="page" id="page-exercise">
+      <div class="page-header" style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <h2>Exercise Log</h2>
+          <p>Track your workouts and activity sessions</p>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('exercise-modal')">+ Log Exercise</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🏃 Exercise Sessions</div>
+        <div id="exercise-list"></div>
+      </div>
+    </div>
+
+    <!-- DIET PAGE -->
+    <div class="page" id="page-diet">
+      <div class="page-header" style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <h2>Diet & Nutrition</h2>
+          <p>Track your meals and calorie intake</p>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('diet-modal')">+ Log Meal</button>
+      </div>
+
+      <div style="margin-bottom:16px">
+        <div class="card">
+          <div class="card-title">📋 Today's Meals</div>
+          <div id="diet-today-list"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🍽️ All Food Entries</div>
+        <div id="diet-list"></div>
+      </div>
+    </div>
+
+    <!-- WEIGHT PAGE -->
+    <div class="page" id="page-weight">
+      <div class="page-header" style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <h2>Weight Log</h2>
+          <p>Track your weight over time</p>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('weight-modal')">+ Log Weight</button>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:16px">
+        <div class="stat-card">
+          <div class="stat-label">Current Weight</div>
+          <div class="stat-value" id="wt-current">—<span class="stat-unit">kg</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Target Weight</div>
+          <div class="stat-value" id="wt-target">—<span class="stat-unit">kg</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">⚖️ Weight History</div>
+        <div id="weight-list"></div>
+      </div>
+    </div>
+
+    <!-- GOALS PAGE -->
+    <div class="page" id="page-goals">
+      <div class="page-header" style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <h2>Goals</h2>
+          <p>Set targets and track your progress</p>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('goal-modal')">+ New Goal</button>
+      </div>
+
+      <div id="goals-list"></div>
+    </div>
+
+    <!-- HISTORY PAGE -->
+    <div class="page" id="page-history">
+      <div class="page-header">
+        <h2>History</h2>
+        <p>A full timeline of your health activity</p>
+      </div>
+      <div class="card">
+        <div class="card-title">📅 Activity Timeline</div>
+        <div id="history-list"></div>
+      </div>
+    </div>
+
+    <!-- GROUPS PAGE -->
+    <div class="page" id="page-groups">
+      <div class="page-header" style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <h2>Groups</h2>
+          <p>Share your progress with friends and communities</p>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('group-modal')">+ Create Group</button>
+      </div>
+
+      <div style="margin-bottom:16px" class="card">
+        <div class="card-title">📧 Join via Code</div>
+        <div style="display:flex;gap:10px">
+          <input class="input" id="join-code-input" placeholder="Enter group code" style="flex:1" />
+          <button class="btn btn-ghost" onclick="joinGroupByCode()">Join</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">👥 My Groups</div>
+        <div id="groups-list"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODALS -->
+
+<!-- EXERCISE MODAL -->
+<div class="modal-overlay" id="exercise-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🏃 Log Exercise</div>
+      <button class="modal-close" onclick="closeModal('exercise-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-group">
+        <label>Exercise Type</label>
+        <select class="input" id="ex-type">
+          <option>Running</option><option>Walking</option><option>Cycling</option>
+          <option>Swimming</option><option>Gym / Weights</option><option>Yoga</option>
+          <option>HIIT</option><option>Football</option><option>Basketball</option>
+          <option>Tennis</option><option>Rowing</option><option>Other</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label>Duration (minutes)</label>
+          <input class="input" id="ex-duration" type="number" placeholder="30" min="1" />
+        </div>
+        <div class="field-group">
+          <label>Distance (km) — optional</label>
+          <input class="input" id="ex-distance" type="number" placeholder="5.0" step="0.1" />
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Date</label>
+        <input class="input" id="ex-date" type="date" />
+      </div>
+      <div class="field-group">
+        <label>Notes</label>
+        <input class="input" id="ex-notes" placeholder="How did it feel?" />
+      </div>
+      <button class="btn btn-primary" onclick="logExercise()" style="margin-top:4px">Save Session</button>
+    </div>
+  </div>
+</div>
+
+<!-- DIET MODAL -->
+<div class="modal-overlay" id="diet-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🥗 Log Meal</div>
+      <button class="modal-close" onclick="closeModal('diet-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-group">
+        <label>Meal Type</label>
+        <select class="input" id="diet-meal">
+          <option>Breakfast</option><option>Lunch</option><option>Dinner</option>
+          <option>Snack</option><option>Drink</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Food / Drink Item</label>
+        <select class="input" id="diet-food" onchange="prefillCalories()">
+          <option value="">-- Select or type custom --</option>
+          <option data-cal="350">Chicken & Rice Bowl (350 kcal)</option>
+          <option data-cal="450">Pasta Bolognese (450 kcal)</option>
+          <option data-cal="80">Apple (80 kcal)</option>
+          <option data-cal="200">Porridge with Banana (200 kcal)</option>
+          <option data-cal="250">Avocado Toast (250 kcal)</option>
+          <option data-cal="300">Grilled Salmon Fillet (300 kcal)</option>
+          <option data-cal="150">Greek Yoghurt (150 kcal)</option>
+          <option data-cal="5">Water (0 kcal)</option>
+          <option data-cal="100">Orange Juice (100 kcal)</option>
+          <option data-cal="120">Latte Coffee (120 kcal)</option>
+          <option value="custom" data-cal="">Custom item...</option>
+        </select>
+      </div>
+      <div id="custom-food-wrap" style="display:none" class="field-group">
+        <label>Custom Food Name</label>
+        <input class="input" id="diet-custom-food" placeholder="e.g. Homemade stew" />
+      </div>
+      <div class="field-group">
+        <label>Calories (kcal)</label>
+        <input class="input" id="diet-calories" type="number" placeholder="350" min="0" />
+      </div>
+      <div class="field-group">
+        <label>Date</label>
+        <input class="input" id="diet-date" type="date" />
+      </div>
+      <button class="btn btn-primary" onclick="logDiet()" style="margin-top:4px">Save Meal</button>
+    </div>
+  </div>
+</div>
+
+<!-- WEIGHT MODAL -->
+<div class="modal-overlay" id="weight-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">⚖️ Log Weight</div>
+      <button class="modal-close" onclick="closeModal('weight-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-group">
+        <label>Weight (kg)</label>
+        <input class="input" id="wt-input" type="number" step="0.1" placeholder="70.5" />
+      </div>
+      <div class="field-group">
+        <label>Date</label>
+        <input class="input" id="wt-date" type="date" />
+      </div>
+      <div class="field-group">
+        <label>Notes</label>
+        <input class="input" id="wt-notes" placeholder="Morning weight, after gym..." />
+      </div>
+      <button class="btn btn-primary" onclick="logWeight()" style="margin-top:4px">Save Weight</button>
+    </div>
+  </div>
+</div>
+
+<!-- GOAL MODAL -->
+<div class="modal-overlay" id="goal-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🎯 New Goal</div>
+      <button class="modal-close" onclick="closeModal('goal-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-group">
+        <label>Goal Type</label>
+        <select class="input" id="goal-type" onchange="updateGoalFields()">
+          <option value="weight">Weight Target</option>
+          <option value="run">Running Distance & Time</option>
+          <option value="exercise">Exercise Sessions per Week</option>
+          <option value="calorie">Daily Calorie Limit</option>
+          <option value="custom">Custom Goal</option>
+        </select>
+      </div>
+      <div id="goal-fields-weight" class="goal-type-fields">
+        <div class="field-group"><label>Target Weight (kg)</label><input class="input" id="goal-target-weight" type="number" placeholder="65" /></div>
+      </div>
+      <div id="goal-fields-run" class="goal-type-fields" style="display:none">
+        <div class="field-row">
+          <div class="field-group"><label>Distance (km)</label><input class="input" id="goal-run-dist" type="number" step="0.1" placeholder="5" /></div>
+          <div class="field-group"><label>Under (minutes)</label><input class="input" id="goal-run-time" type="number" placeholder="30" /></div>
+        </div>
+      </div>
+      <div id="goal-fields-exercise" class="goal-type-fields" style="display:none">
+        <div class="field-group"><label>Sessions per week</label><input class="input" id="goal-ex-count" type="number" placeholder="3" /></div>
+      </div>
+      <div id="goal-fields-calorie" class="goal-type-fields" style="display:none">
+        <div class="field-group"><label>Daily Calorie Limit (kcal)</label><input class="input" id="goal-cal-limit" type="number" placeholder="2000" /></div>
+      </div>
+      <div id="goal-fields-custom" class="goal-type-fields" style="display:none">
+        <div class="field-group"><label>Goal Description</label><input class="input" id="goal-custom-desc" placeholder="Describe your goal..." /></div>
+      </div>
+      <div class="field-group">
+        <label>Target Date</label>
+        <input class="input" id="goal-date" type="date" />
+      </div>
+      <button class="btn btn-primary" onclick="saveGoal()" style="margin-top:4px">Set Goal</button>
+    </div>
+  </div>
+</div>
+
+<!-- GROUP MODAL -->
+<div class="modal-overlay" id="group-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">👥 Create Group</div>
+      <button class="modal-close" onclick="closeModal('group-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-group">
+        <label>Group Name <span style="color:var(--muted);font-size:10px">(must be unique)</span></label>
+        <input class="input" id="group-name-input" placeholder="e.g. Morning Runners" />
+      </div>
+      <div class="field-group">
+        <label>Description</label>
+        <input class="input" id="group-desc-input" placeholder="What's this group about?" />
+      </div>
+      <button class="btn btn-primary" onclick="createGroup()" style="margin-top:4px">Create Group</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container"></div>
+
+<script src="/js/app.js" defer></script>
+</body>
+</html>
