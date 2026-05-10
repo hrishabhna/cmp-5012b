@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VitalTrack — Health Tracker</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
@@ -13,7 +15,7 @@
 <div id="auth-screen">
   <div class="auth-card">
     <div class="auth-logo">
-      <div class="auth-logo-mark">💚</div>
+      <div class="auth-logo-mark"></div>
       <div>
         <h1>VitalTrack</h1>
         <span>Health Tracker by UEA</span>
@@ -103,7 +105,7 @@
   <!-- SIDEBAR -->
   <nav class="sidebar">
     <div class="sidebar-logo">
-      <div class="sidebar-logo-mark">💚</div>
+      <div class="sidebar-logo-mark"></div>
       <h2>VitalTrack</h2>
     </div>
     <div class="sidebar-user">
@@ -113,26 +115,26 @@
 
     <div class="nav-section">
       <div class="nav-label">Overview</div>
-      <button class="nav-item active" onclick="navigate('dashboard')"><span class="nav-icon">🏠</span>Dashboard</button>
-      <button class="nav-item" onclick="navigate('profile')"><span class="nav-icon">👤</span>My Profile</button>
+      <button class="nav-item active" onclick="navigate('dashboard')"><span class="nav-icon"></span>Dashboard</button>
+      <button class="nav-item" onclick="navigate('profile')"><span class="nav-icon"></span>My Profile</button>
     </div>
 
     <div class="nav-section">
       <div class="nav-label">Track</div>
-      <button class="nav-item" onclick="navigate('exercise')"><span class="nav-icon">🏃</span>Exercise</button>
-      <button class="nav-item" onclick="navigate('diet')"><span class="nav-icon">🥗</span>Diet & Nutrition</button>
-      <button class="nav-item" onclick="navigate('weight')"><span class="nav-icon">⚖️</span>Weight Log</button>
+      <button class="nav-item" onclick="navigate('exercise')"><span class="nav-icon"></span>Exercise</button>
+      <button class="nav-item" onclick="navigate('diet')"><span class="nav-icon"></span>Diet & Nutrition</button>
+      <button class="nav-item" onclick="navigate('weight')"><span class="nav-icon"></span>Weight Log</button>
     </div>
 
     <div class="nav-section">
       <div class="nav-label">Progress</div>
-      <button class="nav-item" onclick="navigate('goals')"><span class="nav-icon">🎯</span>Goals</button>
-      <button class="nav-item" onclick="navigate('history')"><span class="nav-icon">📊</span>History</button>
+      <button class="nav-item" onclick="navigate('goals')"><span class="nav-icon"></span>Goals</button>
+      <button class="nav-item" onclick="navigate('history')"><span class="nav-icon"></span>History</button>
     </div>
 
     <div class="nav-section">
       <div class="nav-label">Social</div>
-      <button class="nav-item" onclick="navigate('groups')"><span class="nav-icon">👥</span>Groups</button>
+      <button class="nav-item" onclick="navigate('groups')"><span class="nav-icon"></span>Groups</button>
     </div>
 
     <div class="sidebar-footer">
@@ -146,7 +148,7 @@
     <!-- DASHBOARD -->
     <div class="page active" id="page-dashboard">
       <div class="page-header">
-        <h2 id="dash-greeting">Good morning 👋</h2>
+        <h2 id="dash-greeting">Good morning</h2>
         <p>Here's your health snapshot for today</p>
       </div>
 
@@ -174,7 +176,7 @@
 
       <!-- BMI METER -->
       <div class="card" style="margin-bottom:16px">
-        <div class="card-title">⚕️ BMI Overview</div>
+        <div class="card-title">BMI Overview</div>
         <div class="bmi-meter"><div class="bmi-needle" id="bmi-needle" style="left:30%"></div></div>
         <div class="bmi-labels"><span>Underweight<br>&lt;18.5</span><span>Normal<br>18.5–25</span><span>Overweight<br>25–30</span><span>Obese<br>&gt;30</span></div>
         <p style="font-size:13px;color:var(--muted);margin-top:12px" id="bmi-detail-text">Update your weight to see your current BMI.</p>
@@ -183,14 +185,14 @@
       <!-- WEEKLY BARS -->
       <div class="grid-2">
         <div class="card">
-          <div class="card-title">🔥 Weekly Calories</div>
+          <div class="card-title">Weekly Calories</div>
           <div class="mini-chart" id="cal-chart"></div>
           <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:6px">
             <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
           </div>
         </div>
         <div class="card">
-          <div class="card-title">⚡ Weekly Exercise (min)</div>
+          <div class="card-title">Weekly Exercise (min)</div>
           <div class="mini-chart" id="ex-chart"></div>
           <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:6px">
             <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
@@ -207,7 +209,7 @@
       </div>
       <div class="grid-2">
         <div class="card">
-          <div class="card-title">👤 Personal Information</div>
+          <div class="card-title">Personal Information</div>
           <div style="display:flex;flex-direction:column;gap:12px">
             <div class="field-group"><label>Full Name</label><input class="input" id="prof-name" /></div>
             <div class="field-group"><label>Email Address</label><input class="input" id="prof-email" /></div>
@@ -221,7 +223,7 @@
           </div>
         </div>
         <div class="card">
-          <div class="card-title">📐 Body Metrics</div>
+          <div class="card-title">Body Metrics</div>
           <div style="display:flex;flex-direction:column;gap:12px">
             <div class="field-group"><label>Height (cm)</label><input class="input" id="prof-height" type="number" oninput="updateProfileBMI()" /></div>
             <div class="field-group"><label>Current Weight (kg)</label><input class="input" id="prof-weight" type="number" oninput="updateProfileBMI()" /></div>
@@ -248,7 +250,7 @@
       </div>
 
       <div class="card">
-        <div class="card-title">🏃 Exercise Sessions</div>
+        <div class="card-title">Exercise Sessions</div>
         <div id="exercise-list"></div>
       </div>
     </div>
@@ -265,13 +267,13 @@
 
       <div style="margin-bottom:16px">
         <div class="card">
-          <div class="card-title">📋 Today's Meals</div>
+          <div class="card-title">Today's Meals</div>
           <div id="diet-today-list"></div>
         </div>
       </div>
 
       <div class="card">
-        <div class="card-title">🍽️ All Food Entries</div>
+        <div class="card-title">All Food Entries</div>
         <div id="diet-list"></div>
       </div>
     </div>
@@ -298,7 +300,7 @@
       </div>
 
       <div class="card">
-        <div class="card-title">⚖️ Weight History</div>
+        <div class="card-title">Weight History</div>
         <div id="weight-list"></div>
       </div>
     </div>
@@ -323,7 +325,7 @@
         <p>A full timeline of your health activity</p>
       </div>
       <div class="card">
-        <div class="card-title">📅 Activity Timeline</div>
+        <div class="card-title">Activity Timeline</div>
         <div id="history-list"></div>
       </div>
     </div>
@@ -339,7 +341,7 @@
       </div>
 
       <div style="margin-bottom:16px" class="card">
-        <div class="card-title">📧 Join via Code</div>
+        <div class="card-title">Join via Code</div>
         <div style="display:flex;gap:10px">
           <input class="input" id="join-code-input" placeholder="Enter group code" style="flex:1" />
           <button class="btn btn-ghost" onclick="joinGroupByCode()">Join</button>
@@ -347,7 +349,7 @@
       </div>
 
       <div class="card">
-        <div class="card-title">👥 My Groups</div>
+        <div class="card-title">My Groups</div>
         <div id="groups-list"></div>
       </div>
     </div>
@@ -361,8 +363,8 @@
 <div class="modal-overlay" id="exercise-modal">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title">🏃 Log Exercise</div>
-      <button class="modal-close" onclick="closeModal('exercise-modal')">✕</button>
+      <div class="modal-title">Log Exercise</div>
+      <button class="modal-close" onclick="closeModal('exercise-modal')">×</button>
     </div>
     <div class="modal-body">
       <div class="field-group">
@@ -401,8 +403,8 @@
 <div class="modal-overlay" id="diet-modal">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title">🥗 Log Meal</div>
-      <button class="modal-close" onclick="closeModal('diet-modal')">✕</button>
+      <div class="modal-title">Log Meal</div>
+      <button class="modal-close" onclick="closeModal('diet-modal')">×</button>
     </div>
     <div class="modal-body">
       <div class="field-group">
@@ -450,8 +452,8 @@
 <div class="modal-overlay" id="weight-modal">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title">⚖️ Log Weight</div>
-      <button class="modal-close" onclick="closeModal('weight-modal')">✕</button>
+      <div class="modal-title">Log Weight</div>
+      <button class="modal-close" onclick="closeModal('weight-modal')">×</button>
     </div>
     <div class="modal-body">
       <div class="field-group">
@@ -475,8 +477,8 @@
 <div class="modal-overlay" id="goal-modal">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title">🎯 New Goal</div>
-      <button class="modal-close" onclick="closeModal('goal-modal')">✕</button>
+      <div class="modal-title">New Goal</div>
+      <button class="modal-close" onclick="closeModal('goal-modal')">×</button>
     </div>
     <div class="modal-body">
       <div class="field-group">
@@ -520,8 +522,8 @@
 <div class="modal-overlay" id="group-modal">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title">👥 Create Group</div>
-      <button class="modal-close" onclick="closeModal('group-modal')">✕</button>
+      <div class="modal-title">Create Group</div>
+      <button class="modal-close" onclick="closeModal('group-modal')">×</button>
     </div>
     <div class="modal-body">
       <div class="field-group">
