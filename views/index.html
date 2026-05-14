@@ -286,6 +286,7 @@
           <p>Track your weight over time</p>
         </div>
         <button class="btn btn-primary" onclick="openModal('weight-modal')">+ Log Weight</button>
+        <button class="btn btn-ghost" onclick="openModal('target-modal')">+ Update Target Weight</button>
       </div>
 
       <div class="grid-2" style="margin-bottom:16px">
@@ -470,6 +471,30 @@
       </div>
       <button class="btn btn-primary" onclick="logWeight()" style="margin-top:4px">Save Weight</button>
     </div>
+  </div>
+</div>
+
+<!-- TARGET WEIGHT MODAL -->
+<div class="modal-overlay" id="target-modal">
+  <div class="modal">
+
+    <div class="modal-header">
+      <div class="modal-title">🎯 Update Target Weight</div>
+      <button class="modal-close" onclick="closeModal('target-modal')">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="field-group">
+        <label>Target Weight (kg)</label>
+        <input id="target-weight-input"
+               type="number"
+               class="input"
+               placeholder="e.g. 75">
+      </div>
+
+      <button class="btn btn-primary" onclick="updateTargetWeight()">Save Target</button>
+    </div>
+
   </div>
 </div>
 

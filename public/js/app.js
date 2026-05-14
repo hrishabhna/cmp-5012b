@@ -512,7 +512,7 @@ function saveGoal() {
         description = desc;
     }
 
-    DB.goals.push({ userId: currentUser.username, type, description, targetDate, met: false, id: Date.now(), createdAt: todayStr() });
+    DB.goals.push({ userId: currentUser.username, type, description, targetDate, met: false, id: Date.now(), createdAt: todayStr(), targetWeight: parseFloat(tw) });
     closeModal('goal-modal');
     showToast('Goal set! 🎯', 'success');
     renderGoals();
@@ -749,6 +749,32 @@ function setTodayDates() {
         const el = document.getElementById(id);
         if (el) el.value = today;
     });
+}
+
+function setGoalType(type) {
+    document.getElementById('goal-type').value = type;
+    updateGoalFields();
+}
+
+function updateTargetWeight() {
+    const target = parseFloat(document.getElementById('target-weight-input').value);
+    
+    if (!target || target <= 0) {
+        showToast('Please enter a valid target weight', 'error');
+        return;
+    }
+
+    // update user object
+    currentUser.targetWeight = target;
+
+    closeModal('target-modal');
+
+    showToast('Target weight updated! 🎯', 'success');
+
+    // refresh UI so changes show immediately
+    renderWeight();
+    refreshDashboard();
+    loadProfile();
 }
 
 
