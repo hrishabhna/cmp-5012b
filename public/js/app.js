@@ -764,14 +764,13 @@ function updateTargetWeight() {
         return;
     }
 
-    // update user object
+    // update user's target weight
     currentUser.targetWeight = target;
 
     closeModal('target-modal');
 
-    showToast('Target weight updated! 🎯', 'success');
+    showToast('Target weight updated!', 'success');
 
-    // refresh UI so changes show immediately
     renderWeight();
     refreshDashboard();
     loadProfile();
