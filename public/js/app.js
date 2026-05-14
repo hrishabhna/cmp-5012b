@@ -5,8 +5,8 @@ let DB = {
     users: [
         {
             id: 1,
-            username: "advaith",
-            email: "advaith@email.com",
+            username: "john",
+            email: "john@email.com",
             password: "hashedpassword123",
             height: 180,
             weight: 78,
@@ -26,7 +26,7 @@ let DB = {
     exercises: [
         {
             id: 1,
-            username: "advaith",
+            username: "john",
             activity: "Running",
             duration: 30,
             caloriesBurned: 250,
@@ -45,7 +45,7 @@ let DB = {
     diet: [
         {
             id: 1,
-            username: "advaith",
+            username: "john",
             meal: "Chicken Sandwich",
             calories: 450,
             protein: 30,
@@ -64,7 +64,7 @@ let DB = {
     weights: [
         {
             id: 1,
-            username: "advaith",
+            username: "john",
             weight: 78,
             date: "2026-05-14"
         },
@@ -79,7 +79,7 @@ let DB = {
     goals: [
         {
             id: 1,
-            username: "advaith",
+            username: "john",
             goal: "Lose 5kg",
             targetWeight: 73,
             progress: 40
@@ -96,7 +96,7 @@ let DB = {
         {
             id: 1,
             name: "Fitness Warriors",
-            members: ["advaith", "sarah"]
+            members: ["john", "sarah"]
         }
     ]
 };
