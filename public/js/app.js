@@ -443,6 +443,15 @@ function logWeight() {
     DB.weights.push({ userId: currentUser.username, weight, date, notes, id: Date.now() });
     // Update user's current weight
     currentUser.weight = weight;
+
+    // Automatically allows the user to update target weight when current weight is below target weight
+    if (currentUser.targetWeight && weight <= currentUser.targetWeight) 
+    {
+        document.getElementById('target-weight-input').value = currentUser.targetWeight;
+        openModal('target-modal');
+        showToast('You reached your target weight! Update your goal?', 'success');
+    }
+
     closeModal('weight-modal');
     showToast('Weight logged! ⚖️', 'success');
     renderWeight();
