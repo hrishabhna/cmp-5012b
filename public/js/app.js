@@ -699,3 +699,85 @@ document.getElementById('login-password').value = 'demo123';
 
 // Set goal field default
 document.getElementById('goal-date').value = new Date(Date.now()+30*24*60*60*1000).toISOString().split('T')[0];
+// =============================================================
+// STUDENT ADDITION: GROUP LEADERBOARD FEATURE
+// =============================================================
+
+// Extends the existing renderGroups function to add a Leaderboard button
+const baseRenderGroups = renderGroups;
+renderGroups = function() {
+    // Call the original rendering logic first so we don't break anything
+    baseRenderGroups();
+    
+    const userGroups = DB.groups.filter(group => group.members.includes(currentUser.username));
+    const listElement = document.getElementById('groups-list');
+    
+    // If user has groups, inject the custom Leaderboard button into each group card
+    if (userGroups.length > 0 && listElement) {
+        listElement.innerHTML = userGroups.map(group => `
+            <div class="group-card" style="margin-bottom: 12px; padding: 12px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <div style="font-size: 14px; font-weight: 600; color: var(--text)">👥 ${group.name}</div>
+                    <div style="font-size: 12px; color: var(--muted)">${group.desc || ''} · Code: <strong>${group.code}</strong></div>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-ghost btn-sm" onclick="calculateLeaderboard(${group.id})">🏆 View Rank</button>
+                    <button class="btn btn-danger btn-sm" onclick="leaveGroup(${group.id})">Leave</button>
+                </div>
+            </div>
+        `).join('');
+    }
+};
+
+// Function to calculate and display user rankings based on exercise duration
+function calculateLeaderboard(groupId) {
+    const currentGroup = DB.groups.find(g => g.id === groupId);
+    if (!currentGroup) return;
+
+    let leaderboardArray = [];
+
+    // Loop through each member of the group to calculate their total minutes
+    currentGroup.members.forEach(username => {
+        const userAccount = DB.users.find(u => u.username === username);
+        const displayName = userAccount ? userAccount.name : username;
+        
+        let totalMinutes = 0;
+        
+        // Filter and sum up durations from the exercise array
+        DB.exercises.forEach(exercise => {
+            if (exercise.userId === username) {
+                totalMinutes += exercise.duration;
+            }
+        });
+
+        leaderboardArray.push({
+            name: displayName,
+            username: username,
+            minutes: totalMinutes
+        });
+    });
+
+    // Sort the array in descending order (highest minutes first)
+    leaderboardArray.sort((a, b) => b.minutes - a.minutes);
+
+    // Render the scoreboard results into the HTML container
+    const leaderboardDiv = document.getElementById('group-leaderboard-container');
+    if (leaderboardDiv) {
+        leaderboardDiv.innerHTML = `
+            <div style="background: var(--surface2, #f9f9f9); border: 1px solid var(--border); padding: 15px; border-radius: 8px; margin-top: 15px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 13px; color: var(--text); font-weight: 600;">🏆 ${currentGroup.name} - Activity Standings</h4>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    ${leaderboardArray.map((member, index) => `
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
+                            <span>
+                                <strong>#${index + 1}</strong> ${member.name} 
+                                ${member.username === currentUser.username ? '<span style="color: var(--accent); font-size: 11px;">(You)</span>' : ''}
+                            </span>
+                            <span class="badge badge-green">${member.minutes} mins</span>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+}
