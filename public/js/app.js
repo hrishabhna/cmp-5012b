@@ -1,13 +1,104 @@
-// ─────────────────────────────────────────────
+
 // STATE
-// ─────────────────────────────────────────────
+
 let DB = {
-    users: [],
-    exercises: [],
-    diet: [],
-    weights: [],
-    goals: [],
-    groups: []
+    users: [
+        {
+            id: 1,
+            username: "advaith",
+            email: "advaith@email.com",
+            password: "hashedpassword123",
+            height: 180,
+            weight: 78,
+            bmi: 24.1
+        },
+        {
+            id: 2,
+            username: "sarah",
+            email: "sarah@email.com",
+            password: "hashedpassword456",
+            height: 165,
+            weight: 62,
+            bmi: 22.8
+        }
+    ],
+
+    exercises: [
+        {
+            id: 1,
+            username: "advaith",
+            activity: "Running",
+            duration: 30,
+            caloriesBurned: 250,
+            date: "2026-05-14"
+        },
+        {
+            id: 2,
+            username: "sarah",
+            activity: "Cycling",
+            duration: 45,
+            caloriesBurned: 400,
+            date: "2026-05-13"
+        }
+    ],
+
+    diet: [
+        {
+            id: 1,
+            username: "advaith",
+            meal: "Chicken Sandwich",
+            calories: 450,
+            protein: 30,
+            date: "2026-05-14"
+        },
+        {
+            id: 2,
+            username: "sarah",
+            meal: "Salad Bowl",
+            calories: 320,
+            protein: 12,
+            date: "2026-05-13"
+        }
+    ],
+
+    weights: [
+        {
+            id: 1,
+            username: "advaith",
+            weight: 78,
+            date: "2026-05-14"
+        },
+        {
+            id: 2,
+            username: "sarah",
+            weight: 62,
+            date: "2026-05-13"
+        }
+    ],
+
+    goals: [
+        {
+            id: 1,
+            username: "advaith",
+            goal: "Lose 5kg",
+            targetWeight: 73,
+            progress: 40
+        },
+        {
+            id: 2,
+            username: "sarah",
+            goal: "Run 5km",
+            progress: 70
+        }
+    ],
+
+    groups: [
+        {
+            id: 1,
+            name: "Fitness Warriors",
+            members: ["advaith", "sarah"]
+        }
+    ]
 };
 
 let currentUser = null;
@@ -20,9 +111,9 @@ DB.users.push({
     gender: 'Male', targetWeight: 75
 });
 
-// ─────────────────────────────────────────────
+
 // AUTH HELPERS
-// ─────────────────────────────────────────────
+
 function switchAuthTab(tab) {
     document.querySelectorAll('.auth-tab').forEach((t,i) => {
         t.classList.toggle('active', (i===0) === (tab==='login'));
@@ -121,9 +212,9 @@ function launchApp() {
     navigate('dashboard');
 }
 
-// ─────────────────────────────────────────────
+
 // NAVIGATION
-// ─────────────────────────────────────────────
+
 function navigate(page) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -142,17 +233,17 @@ function navigate(page) {
     if (page==='profile') loadProfile();
 }
 
-// ─────────────────────────────────────────────
+
 // SIDEBAR
-// ─────────────────────────────────────────────
+
 function populateSidebar() {
     document.getElementById('sidebar-name').textContent = currentUser.name;
     document.getElementById('sidebar-handle').textContent = '@' + currentUser.username;
 }
 
-// ─────────────────────────────────────────────
+
 // DASHBOARD
-// ─────────────────────────────────────────────
+
 function refreshDashboard() {
     const hr = new Date().getHours();
     const greet = hr < 12 ? 'Good morning' : hr < 18 ? 'Good afternoon' : 'Good evening';
@@ -222,9 +313,9 @@ function renderWeeklyCharts() {
     });
 }
 
-// ─────────────────────────────────────────────
+
 // EXERCISE
-// ─────────────────────────────────────────────
+
 function logExercise() {
     const type = document.getElementById('ex-type').value;
     const duration = parseInt(document.getElementById('ex-duration').value);
@@ -263,9 +354,9 @@ function renderExercise() {
     </table>`;
 }
 
-// ─────────────────────────────────────────────
+
 // DIET
-// ─────────────────────────────────────────────
+
 function prefillCalories() {
     const sel = document.getElementById('diet-food');
     const opt = sel.options[sel.selectedIndex];
@@ -340,9 +431,9 @@ function renderDiet() {
     </table>`;
 }
 
-// ─────────────────────────────────────────────
+
 // WEIGHT
-// ─────────────────────────────────────────────
+
 function logWeight() {
     const weight = parseFloat(document.getElementById('wt-input').value);
     const date = document.getElementById('wt-date').value;
@@ -386,9 +477,9 @@ function renderWeight() {
     </table>`;
 }
 
-// ─────────────────────────────────────────────
+
 // GOALS
-// ─────────────────────────────────────────────
+
 function updateGoalFields() {
     const type = document.getElementById('goal-type').value;
     document.querySelectorAll('.goal-type-fields').forEach(f=>f.style.display='none');
@@ -492,9 +583,9 @@ function checkGoalAlerts() {
     alerts.innerHTML = html;
 }
 
-// ─────────────────────────────────────────────
+
 // HISTORY
-// ─────────────────────────────────────────────
+
 function renderHistory() {
     const uid = currentUser.username;
     const all = [
@@ -518,9 +609,9 @@ function renderHistory() {
     `).join('');
 }
 
-// ─────────────────────────────────────────────
+
 // GROUPS
-// ─────────────────────────────────────────────
+
 function createGroup() {
     const name = document.getElementById('group-name-input').value.trim();
     const desc = document.getElementById('group-desc-input').value.trim();
@@ -586,9 +677,9 @@ function renderGroups() {
     `).join('');
 }
 
-// ─────────────────────────────────────────────
+
 // PROFILE
-// ─────────────────────────────────────────────
+
 function loadProfile() {
     document.getElementById('prof-name').value = currentUser.name || '';
     document.getElementById('prof-email').value = currentUser.email || '';
@@ -627,9 +718,9 @@ function saveProfile() {
     refreshDashboard();
 }
 
-// ─────────────────────────────────────────────
+
 // HELPERS
-// ─────────────────────────────────────────────
+
 function deleteEntry(table, id) {
     DB[table] = DB[table].filter(e=>e.id!==id);
     if (table==='exercises') renderExercise();
@@ -660,9 +751,9 @@ function setTodayDates() {
     });
 }
 
-// ─────────────────────────────────────────────
+
 // MODAL
-// ─────────────────────────────────────────────
+
 function openModal(id) {
     document.getElementById(id).classList.add('open');
 }
@@ -678,9 +769,9 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
     });
 });
 
-// ─────────────────────────────────────────────
+
 // TOAST
-// ─────────────────────────────────────────────
+
 function showToast(message, type='success') {
     const container = document.getElementById('toast-container');
     const toast = document.createElement('div');
@@ -690,18 +781,18 @@ function showToast(message, type='success') {
     setTimeout(() => toast.remove(), 3500);
 }
 
-// ─────────────────────────────────────────────
+
 // INIT
-// ─────────────────────────────────────────────
+
 // Auto-login demo for testing
 document.getElementById('login-username').value = 'demo';
 document.getElementById('login-password').value = 'demo123';
 
 // Set goal field default
 document.getElementById('goal-date').value = new Date(Date.now()+30*24*60*60*1000).toISOString().split('T')[0];
-// =============================================================
+
 // STUDENT ADDITION: GROUP LEADERBOARD FEATURE
-// =============================================================
+
 
 // Extends the existing renderGroups function to add a Leaderboard button
 const baseRenderGroups = renderGroups;
