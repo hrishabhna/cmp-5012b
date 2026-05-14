@@ -443,6 +443,15 @@ function logWeight() {
     DB.weights.push({ userId: currentUser.username, weight, date, notes, id: Date.now() });
     // Update user's current weight
     currentUser.weight = weight;
+
+    // Automatically allows the user to update target weight when current weight is below target weight
+    if (currentUser.targetWeight && weight <= currentUser.targetWeight) 
+    {
+        document.getElementById('target-weight-input').value = currentUser.targetWeight;
+        openModal('target-modal');
+        showToast('You reached your target weight! Update your goal?', 'success');
+    }
+
     closeModal('weight-modal');
     showToast('Weight logged! ⚖️', 'success');
     renderWeight();
@@ -512,7 +521,7 @@ function saveGoal() {
         description = desc;
     }
 
-    DB.goals.push({ userId: currentUser.username, type, description, targetDate, met: false, id: Date.now(), createdAt: todayStr() });
+    DB.goals.push({ userId: currentUser.username, type, description, targetDate, met: false, id: Date.now(), createdAt: todayStr(), targetWeight: parseFloat(tw) });
     closeModal('goal-modal');
     showToast('Goal set! 🎯', 'success');
     renderGoals();
@@ -749,6 +758,31 @@ function setTodayDates() {
         const el = document.getElementById(id);
         if (el) el.value = today;
     });
+}
+
+function setGoalType(type) {
+    document.getElementById('goal-type').value = type;
+    updateGoalFields();
+}
+
+function updateTargetWeight() {
+    const target = parseFloat(document.getElementById('target-weight-input').value);
+    
+    if (!target || target <= 0) {
+        showToast('Please enter a valid target weight', 'error');
+        return;
+    }
+
+    // update user's target weight
+    currentUser.targetWeight = target;
+
+    closeModal('target-modal');
+
+    showToast('Target weight updated!', 'success');
+
+    renderWeight();
+    refreshDashboard();
+    loadProfile();
 }
 
 
