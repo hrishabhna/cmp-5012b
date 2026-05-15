@@ -7,6 +7,7 @@ function label(dateStr) {
   return new Date(dateStr + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }); //this converts the date string into a simpler version
 }
  
+//this creates the chart where you can choose from either a line or a bar and the data can be inserted. The bars are rounded in  the corners and the lines will become a smooth curve.
 function makeChart(container, type, labels, values, color) {
   const canvas = document.createElement('canvas');
   document.getElementById(container).appendChild(canvas);
@@ -32,21 +33,21 @@ function makeChart(container, type, labels, values, color) {
     }
   });
 }
- 
+ //This function fetches the weight, calories and excercise data and then draws the chart for each individual section. Each section is colour corordinated with weight being green, calories being blue and excercise is pink. 
 async function loadCharts() {
   const weight   = await get('/api/dashboard/weight');
   const calories = await get('/api/dashboard/calories');
   const exercise = await get('/api/dashboard/exercise');
  
-  // Weight — new card above weekly bars (needs <canvas id="chart-weight"> in index.html)
+  // Weight
   if (weight.length)
     makeChart('chart-weight', 'line', weight.map(d => label(d.date)), weight.map(d => d.value), 'rgb(74, 222, 128)');
  
-  // Calories — renders inside existing #cal-chart div
+  // Calories
   if (calories.length)
     makeChart('cal-chart', 'bar', calories.map(d => label(d.date)), calories.map(d => d.value), 'rgb(96, 165, 250)');
  
-  // Exercise — renders inside existing #ex-chart div
+  // Exercise 
   if (exercise.length)
     makeChart('ex-chart', 'bar', exercise.map(d => label(d.date)), exercise.map(d => d.value), 'rgb(244, 114, 182)');
 }
