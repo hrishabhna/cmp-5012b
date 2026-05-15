@@ -1,15 +1,16 @@
-// public/js/charts.js
  
 async function get(url) {
   return fetch(url).then(r => r.json());
 }
  
 function label(dateStr) {
-  return new Date(dateStr + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  return new Date(dateStr + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }); //this converts the date string into a simpler version
 }
  
-function makeChart(id, type, labels, values, color) {
-  new Chart(document.getElementById(id), {
+function makeChart(container, type, labels, values, color) {
+  const canvas = document.createElement('canvas');
+  document.getElementById(container).appendChild(canvas);
+  new Chart(canvas, {
     type,
     data: {
       labels,
@@ -27,7 +28,7 @@ function makeChart(id, type, labels, values, color) {
     options: {
       responsive: true,
       plugins: { legend: { display: false } },
-      scales: { x: { ticks: { maxRotation: 45 } }, y: { beginAtZero: true } }
+      scales: { x: { display: false }, y: { beginAtZero: true } }
     }
   });
 }
@@ -37,14 +38,17 @@ async function loadCharts() {
   const calories = await get('/api/dashboard/calories');
   const exercise = await get('/api/dashboard/exercise');
  
+  // Weight — new card above weekly bars (needs <canvas id="chart-weight"> in index.html)
   if (weight.length)
-    makeChart('chart-weight',   'line', weight.map(d => label(d.date)),   weight.map(d => d.value),   'rgb(74, 222, 128)');
+    makeChart('chart-weight', 'line', weight.map(d => label(d.date)), weight.map(d => d.value), 'rgb(74, 222, 128)');
  
+  // Calories — renders inside existing #cal-chart div
   if (calories.length)
-    makeChart('chart-calories', 'bar',  calories.map(d => label(d.date)), calories.map(d => d.value), 'rgb(96, 165, 250)');
+    makeChart('cal-chart', 'bar', calories.map(d => label(d.date)), calories.map(d => d.value), 'rgb(96, 165, 250)');
  
+  // Exercise — renders inside existing #ex-chart div
   if (exercise.length)
-    makeChart('chart-exercise', 'bar',  exercise.map(d => label(d.date)), exercise.map(d => d.value), 'rgb(244, 114, 182)');
+    makeChart('ex-chart', 'bar', exercise.map(d => label(d.date)), exercise.map(d => d.value), 'rgb(244, 114, 182)');
 }
  
 document.addEventListener('DOMContentLoaded', loadCharts);
